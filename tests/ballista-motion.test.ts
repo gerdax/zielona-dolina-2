@@ -19,3 +19,19 @@ it("converges at different frame rates and stays still without elapsed time", ()
     expect(turnBallista(yaw, 0, 0)).toBe(yaw);
   }
 });
+
+it("releases the string, recoils and visibly reloads before the next shot", async () => {
+  const { ballistaPose } = await import("../src/ballista-motion");
+  expect(ballistaPose(-1).loaded).toBe(true);
+  expect(ballistaPose(0).draw).toBe(1);
+  expect(ballistaPose(0.08).draw).toBe(0);
+  expect(ballistaPose(0.12).recoil).toBeLessThan(-0.1);
+  expect(ballistaPose(0.3).recoil).toBe(0);
+  expect(ballistaPose(0.4).loaded).toBe(false);
+  expect(ballistaPose(1).loaded).toBe(true);
+  expect(ballistaPose(1).draw).toBeLessThan(ballistaPose(2).draw);
+  expect(ballistaPose(2.6).draw).toBe(1);
+  for (let t = 0; t < 6; t += 0.013)
+    for (const value of Object.values(ballistaPose(t)))
+      if (typeof value === "number") expect(Number.isFinite(value)).toBe(true);
+});

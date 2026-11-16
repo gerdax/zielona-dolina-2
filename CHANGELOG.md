@@ -1,5 +1,11 @@
 # Historia zmian
 
+## [0.23.10] — 2026-11-16
+
+- Balista ma pełny cykl animacji: zwolnienie cięciwy przy strzale, odrzut korpusu, powrót, obrót korby, naciąganie cięciwy oraz załadowanie kolejnego bełtu. Podstawa wieży pozostaje nieruchoma, a wystrzelony bełt zachowuje własny tor.
+- Wieża sygnałowa otrzymała drewniane wzmocnienia krzyżowe, kamienne stopy, pomost z desek, drabinę, proporzec i otwarty metalowy kosz z drewnem. Alarm pokazują migoczące płomienie i wznoszący się dym zamiast pojedynczego stożka.
+- Nowe modele i animacje działają na istniejących budowlach w osadzie testowej. Sprawdzone wizualnie; testy animacji, balisty i wieży sygnałowej oraz kompilacja przechodzą.
+
 ## [0.23.9] — 2026-11-16
 
 - Nowy model wieży balistycznej: wygięte ramiona łuku, widoczna cięciwa, prowadnica, wiązki skrętne, wyciągarka z korbą i bełt z grotem oraz lotkami.

@@ -246,32 +246,115 @@ export function expansionModel(type: string): T.Group | undefined {
     for (let i = 0; i < 4; i++)
       box(g, wood, -1, 0.12 + i * 0.1, 0, 0.55, 0.07, 0.8);
   } else {
-    for (const x of [-0.5, 0.5])
-      for (const z of [-0.5, 0.5]) box(g, dark, x, 1.6, z, 0.14, 3.2, 0.14);
-    box(g, wood, 0, 2.85, 0, 1.45, 0.17, 1.45);
-    for (const z of [-0.72, 0.72]) {
-      box(g, wood, 0, 3.3, z, 1.5, 0.08, 0.07);
-      for (const x of [-0.65, 0.65]) box(g, dark, x, 3.1, z, 0.07, 0.6, 0.07);
+    const iron = "#48554e";
+    for (const x of [-0.54, 0.54])
+      for (const z of [-0.54, 0.54]) {
+        box(g, stone, x, 0.12, z, 0.34, 0.24, 0.34);
+        box(g, dark, x, 1.55, z, 0.18, 2.9, 0.18);
+        for (const y of [0.42, 2.42]) box(g, iron, x, y, z, 0.195, 0.09, 0.195);
+      }
+    for (const z of [-0.54, 0.54])
+      for (const side of [-1, 1]) {
+        const brace = box(g, wood, 0, 1.55, z, 0.1, 2.55, 0.11);
+        brace.rotation.z = side * 0.4;
+      }
+    for (const x of [-0.54, 0.54]) {
+      const brace = box(g, wood, x, 1.55, 0, 0.11, 2.55, 0.1);
+      brace.rotation.x = 0.4;
     }
     for (let i = 0; i < 9; i++)
-      box(g, wood, 0, 0.25 + i * 0.3, 0.6, 0.48, 0.055, 0.07);
-    for (const x of [-0.28, 0.28]) box(g, dark, x, 1.45, 0.62, 0.06, 2.8, 0.06);
-    cyl(g, "#566158", 0, 3.25, 0, 0.31, 0.35);
+      box(
+        g,
+        i % 2 ? wood : "#ad8350",
+        -0.68 + i * 0.17,
+        2.87,
+        0,
+        0.16,
+        0.16,
+        1.5,
+      );
+    for (const z of [-0.77, 0.77]) box(g, dark, 0, 2.76, z, 1.65, 0.16, 0.12);
+    for (const x of [-0.77, 0.77]) box(g, dark, x, 2.76, 0, 0.12, 0.16, 1.65);
+    for (const x of [-0.74, 0.74])
+      for (const z of [-0.74, 0.74]) box(g, dark, x, 3.15, z, 0.09, 0.65, 0.09);
+    for (const z of [-0.74, 0.74])
+      for (const y of [3.1, 3.38]) box(g, wood, 0, y, z, 1.55, 0.07, 0.07);
+    for (const x of [-0.74, 0.74])
+      for (const y of [3.1, 3.38]) box(g, wood, x, y, 0, 0.07, 0.07, 1.55);
+    // Ladder and handholds give the watch platform a readable entrance.
+    for (const x of [-0.25, 0.25])
+      box(g, wood, x, 1.6, 0.83, 0.065, 3.15, 0.065);
+    for (let i = 0; i < 11; i++)
+      box(g, wood, 0, 0.28 + i * 0.255, 0.83, 0.55, 0.055, 0.065);
+    box(g, "#436d6c", -0.755, 2.15, 0.1, 0.035, 0.72, 0.48);
+    box(g, "#d3b76d", -0.78, 1.8, 0.1, 0.04, 0.06, 0.5);
+    // Open iron fire basket with crossed logs, not a solid cone on a bowl.
+    const bowl = new T.Mesh(
+      new T.CylinderGeometry(0.35, 0.23, 0.28, 10, 1, true),
+      material(iron),
+    );
+    bowl.position.y = 3.15;
+    g.add(bowl);
+    cyl(g, "#303b32", 0, 3.08, 0, 0.26, 0.06);
+    for (let i = 0; i < 8; i++) {
+      const angle = (i * Math.PI) / 4;
+      box(
+        g,
+        iron,
+        Math.sin(angle) * 0.34,
+        3.36,
+        Math.cos(angle) * 0.34,
+        0.035,
+        0.46,
+        0.035,
+      );
+    }
+    for (const y of [3.18, 3.56]) {
+      const rim = new T.Mesh(
+        new T.TorusGeometry(0.35, 0.035, 5, 12),
+        material(iron),
+      );
+      rim.rotation.x = Math.PI / 2;
+      rim.position.y = y;
+      g.add(rim);
+    }
+    for (const side of [-1, 1]) {
+      const log = box(g, "#745035", 0, 3.3, 0, 0.48, 0.09, 0.1);
+      log.rotation.y = side * 0.65;
+    }
     const fire = new T.Group();
+    fire.position.y = 3.32;
     g.add(fire);
     g.userData.signalFire = fire;
-    const flame = new T.Mesh(
-      new T.ConeGeometry(0.23, 0.65, 7),
-      new T.MeshBasicMaterial({ color: "#f3b55f" }),
-    );
-    flame.position.y = 3.65;
-    fire.add(flame);
-    const small = new T.Mesh(
-      new T.ConeGeometry(0.12, 0.42, 6),
-      new T.MeshBasicMaterial({ color: "#f8de88" }),
-    );
-    small.position.y = 3.6;
-    fire.add(small);
+    for (let i = 0; i < 5; i++) {
+      const flame = new T.Mesh(
+        new T.ConeGeometry(i % 2 ? 0.1 : 0.15, 0.48 + (i % 3) * 0.17, 5),
+        new T.MeshBasicMaterial({ color: i % 2 ? "#f8d982" : "#e7923b" }),
+      );
+      flame.position.set(
+        Math.sin(i * 2) * 0.14,
+        0.18 + (i % 3) * 0.08,
+        Math.cos(i * 2) * 0.14,
+      );
+      flame.rotation.z = Math.sin(i * 3) * 0.2;
+      fire.add(flame);
+    }
+    const smoke = new T.Group();
+    smoke.position.y = 3.7;
+    g.add(smoke);
+    g.userData.signalSmoke = smoke;
+    for (let i = 0; i < 4; i++) {
+      const puff = new T.Mesh(
+        new T.IcosahedronGeometry(0.19, 1),
+        new T.MeshBasicMaterial({
+          color: "#666e5d",
+          transparent: true,
+          opacity: 0.13,
+          depthWrite: false,
+        }),
+      );
+      smoke.add(puff);
+    }
   }
   return g;
 }

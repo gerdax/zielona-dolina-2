@@ -122,10 +122,15 @@ export function defenseModel(type: string) {
       };
       cylinder(turret, iron, 0, 0.025, 0, 0.32, 0.12);
       cylinder(turret, wood, 0, 0.14, 0, 0.19, 0.24);
-      box(turret, dark, 0, 0.29, -0.08, 0.32, 0.16, 1.38);
+      const weapon = new T.Group();
+      turret.add(weapon);
+      g.userData.ballistaWeapon = weapon;
+      const strings: T.Mesh[] = [];
+      g.userData.ballistaStrings = strings;
+      box(weapon, dark, 0, 0.29, -0.08, 0.32, 0.16, 1.38);
       for (const x of [-0.13, 0.13])
-        box(turret, wood, x, 0.37, -0.06, 0.065, 0.08, 1.43);
-      box(turret, iron, 0, 0.4, 0.51, 0.35, 0.04, 0.18);
+        box(weapon, wood, x, 0.37, -0.06, 0.065, 0.08, 1.43);
+      box(weapon, iron, 0, 0.4, 0.51, 0.35, 0.04, 0.18);
       // Curved arms, iron tips and a taut V-shaped string read as a giant crossbow.
       for (const side of [-1, 1]) {
         const points = [
@@ -145,24 +150,17 @@ export function defenseModel(type: string) {
           new T.MeshStandardMaterial({ color: wood, roughness: 0.9 }),
         );
         limb.castShadow = true;
-        turret.add(limb);
-        box(turret, iron, side * 0.82, 0.35, 0.16, 0.12, 0.14, 0.16);
+        weapon.add(limb);
+        box(weapon, iron, side * 0.82, 0.35, 0.16, 0.12, 0.14, 0.16);
         const string = new T.Mesh(
-          new T.TubeGeometry(
-            new T.LineCurve3(
-              new T.Vector3(side * 0.85, 0.36, 0.14),
-              new T.Vector3(0, 0.36, -0.48),
-            ),
-            1,
-            0.014,
-            4,
-            false,
-          ),
+          new T.CylinderGeometry(0.014, 0.014, 1, 5),
           new T.MeshStandardMaterial({ color: rope }),
         );
-        turret.add(string);
+        string.userData.side = side;
+        weapon.add(string);
+        strings.push(string);
         const skein = cylinder(
-          turret,
+          weapon,
           rope,
           side * 0.2,
           0.35,
@@ -170,16 +168,20 @@ export function defenseModel(type: string) {
           0.095,
           0.3,
         );
-        cylinder(turret, iron, side * 0.2, 0.51, 0.38, 0.12, 0.045);
-        box(turret, iron, side * 0.2, 0.17, 0.38, 0.24, 0.05, 0.22);
+        cylinder(weapon, iron, side * 0.2, 0.51, 0.38, 0.12, 0.045);
+        box(weapon, iron, side * 0.2, 0.17, 0.38, 0.24, 0.05, 0.22);
       }
-      const winch = cylinder(turret, wood, 0, 0.35, -0.62, 0.1, 0.53);
+      const winchAssembly = new T.Group();
+      winchAssembly.position.set(0, 0.35, -0.62);
+      weapon.add(winchAssembly);
+      g.userData.ballistaWinch = winchAssembly;
+      const winch = cylinder(winchAssembly, wood, 0, 0, 0, 0.1, 0.53);
       winch.rotation.z = Math.PI / 2;
       for (const x of [-0.25, 0.25])
-        box(turret, iron, x, 0.32, -0.62, 0.065, 0.3, 0.2);
-      box(turret, iron, 0.33, 0.36, -0.62, 0.17, 0.045, 0.045);
-      box(turret, wood, 0.41, 0.43, -0.62, 0.045, 0.18, 0.045);
-      const bolt = box(turret, "#c5ab78", 0, 0.38, 0.35, 0.035, 0.035, 0.85);
+        box(weapon, iron, x, 0.32, -0.62, 0.065, 0.3, 0.2);
+      box(winchAssembly, iron, 0.33, 0.01, 0, 0.17, 0.045, 0.045);
+      box(winchAssembly, wood, 0.41, 0.08, 0, 0.045, 0.18, 0.045);
+      const bolt = box(weapon, "#c5ab78", 0, 0.38, 0.35, 0.035, 0.035, 0.85);
       const head = new T.Mesh(
         new T.ConeGeometry(0.065, 0.2, 4),
         new T.MeshStandardMaterial({
@@ -205,6 +207,9 @@ export function defenseModel(type: string) {
         feather.rotation.z = side * 0.3;
       }
       g.userData.bolt = bolt;
+      const loaded = bolt.clone(true);
+      weapon.add(loaded);
+      g.userData.ballistaLoaded = loaded;
       // Spare bolts sit against the tower, outside the rotating assembly.
       for (let i = 0; i < 3; i++) {
         box(g, wood, 0.67, 0.75, -0.3 + i * 0.17, 0.035, 1, 0.035);

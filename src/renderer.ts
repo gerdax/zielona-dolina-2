@@ -1,5 +1,5 @@
 import { BallistaImpacts } from "./ballista-impact";
-import { turnBallista } from "./ballista-motion";
+import { turnBallista, ballistaPose } from "./ballista-motion";
 import { defenseModel } from "./defense-models";
 import { expansionModel } from "./expansion-models";
 import { damageStage, collapsePose } from "./fortification-damage";
@@ -2610,6 +2610,31 @@ export class ValleyRenderer {
             | undefined;
         const bolt = g.userData.bolt as T.Mesh;
         const age = attack ? world.time - attack.time : 100;
+        const pose = ballistaPose(attack ? age : -1);
+        const weapon = g.userData.ballistaWeapon as T.Group | undefined;
+        if (weapon) weapon.position.z = pose.recoil;
+        const loaded = g.userData.ballistaLoaded as T.Mesh | undefined;
+        if (loaded) {
+          loaded.visible = pose.loaded;
+          loaded.position.z = 0.35 + (1 - pose.draw) * 0.22;
+        }
+        if (g.userData.ballistaWinch)
+          (g.userData.ballistaWinch as T.Group).rotation.x = pose.winch;
+        for (const string of (g.userData.ballistaStrings || []) as T.Mesh[]) {
+          const tip = new T.Vector3(
+              Number(string.userData.side) * 0.85,
+              0.36,
+              0.14,
+            ),
+            center = new T.Vector3(0, 0.36, 0.14 - 0.62 * pose.draw),
+            delta = center.clone().sub(tip);
+          string.position.copy(tip).add(center).multiplyScalar(0.5);
+          string.scale.y = delta.length();
+          string.quaternion.setFromUnitVectors(
+            new T.Vector3(0, 1, 0),
+            delta.normalize(),
+          );
+        }
         bolt.visible = age >= 0 && age < 0.45;
         if (attack) {
           const live = world.entities[attack.targetId || ""];
@@ -2692,7 +2717,22 @@ export class ValleyRenderer {
             (v) =>
               v.faction === "enemy" && Math.hypot(v.x - e.x, v.z - e.z) <= 14,
           );
-        fire.scale.y = 1 + Math.sin(realTime * 7) * 0.035;
+        fire.children.forEach((flame, i) => {
+          flame.scale.y = 1 + Math.sin(realTime * 8 + i * 2) * 0.16;
+          flame.rotation.z = Math.sin(realTime * 5 + i) * 0.13;
+        });
+        if (g.userData.signalSmoke) {
+          const smoke = g.userData.signalSmoke as T.Group;
+          smoke.visible = fire.visible;
+          smoke.children.forEach((puff, i) => {
+            const t = (realTime * 0.28 + i / 4) % 1;
+            puff.position.set(t * 0.3, t * 1.25, Math.sin(t * 4 + i) * 0.1);
+            puff.scale.setScalar(0.6 + t);
+            (
+              puff as T.Mesh<T.BufferGeometry, T.MeshBasicMaterial>
+            ).material.opacity = 0.16 * (1 - t);
+          });
+        }
       }
       if (g.userData.door) {
         const d = g.userData.door as T.Mesh;
