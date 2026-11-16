@@ -1,5 +1,22 @@
 # Historia zmian
 
+## [0.23.9] — 2026-11-16
+
+- Nowy model wieży balistycznej: wygięte ramiona łuku, widoczna cięciwa, prowadnica, wiązki skrętne, wyciągarka z korbą i bełt z grotem oraz lotkami.
+- Kamienne wzmocnienia narożników, warstwy muru, drewniana platforma, proporzec i stojak zapasowych bełtów wyróżniają wieżę.
+- Zachowane płynne celowanie, nieruchoma podstawa i działanie istniejących zapisów. Model obejrzany; testy balisty i obrony oraz kompilacja przechodzą.
+
+### Publikacja GitHub Pages — 2026-11-16
+
+- Opublikowano wersję 0.23.8 w osobnym repozytorium `gerdax/zielona-dolina-2`. Gra działa pod https://gerdax.github.io/zielona-dolina-2/ .
+- GitHub Actions: instalacja zależności, 209 testów, build i wdrożenie zakończone sukcesem. Publiczna gra otwarta i uruchomiona.
+- Opublikowano wyłącznie pliki gry, testy i konfigurację. Lokalna historia, instrukcje oraz dokumenty robocze pozostały na komputerze.
+
+### Publikacja 0.23.8 — 2026-11-16
+
+- Gra uruchomiona na https://gerdax.github.io/zielona-dolina-2/ . Osada testowa dostępna przez `?qa=village`.
+- GitHub Actions: 209 testów, build i wdrożenie zakończone sukcesem. Publiczny eksport obejmuje grę, testy i konfigurację; lokalne instrukcje i dokumenty robocze pozostają na komputerze.
+
 ## [0.23.8] — 2026-11-16
 
 - Bełty balisty pozostawiają widoczne wbite trzpienie i pęknięcia na uszkodzonych murach i bramach; mocno uszkodzona krata traci pręty. Zniszczone konstrukcje zawalają się po dolocie bełtu, z istniejącymi dźwiękami i odłamkami.

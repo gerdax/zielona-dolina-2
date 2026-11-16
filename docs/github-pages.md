@@ -14,3 +14,9 @@ Workflow instaluje zależności, uruchamia testy, buduje grę z właściwą ści
 Zapisy gry pozostają w przeglądarce gracza. Nowa domena nie odczyta lokalnych zapisów z `127.0.0.1`; można je przenieść przez Eksportuj/Importuj w menu gry.
 
 Gra została opublikowana i uruchomiona w przeglądarce: https://gerdax.github.io/zielona-dolina-2/ . Źródło Pages jest ustawione na GitHub Actions; testy, build i wdrożenie przeszły. Bieżący status publikacji: https://github.com/gerdax/zielona-dolina-2/actions
+
+## Kolejne aktualizacje
+
+Publiczny `main` ma osobną historię utworzoną przez integrację GitHub. Nie używaj force push ani nie wysyłaj całej historii lokalnej. Aktualizuj przez integrację tylko pliki gry, testy, konfigurację budowania i publiczną dokumentację. `AGENTS.md`, lokalne instrukcje, dokumenty robocze, `outputs/`, zapisy graczy oraz prywatne ścieżki pozostają lokalnie.
+
+Weryfikacja publikacji: workflow zakończył się sukcesem (209 testów), publiczna gra została otwarta i uruchomiona.

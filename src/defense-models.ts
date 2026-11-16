@@ -83,20 +83,143 @@ export function defenseModel(type: string) {
       }
     box(g, dark, 0, 0.55, size + 0.02, 0.3, 0.7, 0.03);
     if (type === "ballistaTower") {
+      const iron = "#4c5953",
+        rope = "#d4bc84";
+      // Masonry courses, reinforced corners and a visible siege platform.
+      for (const y of [0.4, 0.8, 1.2, 1.6])
+        for (const side of [-1, 1]) {
+          box(g, "#858c7d", side * 0.606, y, 0, 0.012, 0.018, 1.18);
+          box(g, "#858c7d", 0, y, side * 0.606, 1.18, 0.018, 0.012);
+        }
+      for (const x of [-0.52, 0.52])
+        for (const z of [-0.52, 0.52])
+          box(g, "#bcc0a7", x, 0.93, z, 0.2, 1.86, 0.2);
+      box(g, "#b9bba3", 0, 0.09, 0, 1.36, 0.18, 1.36);
+      box(g, "#3e6868", 0.37, 1.05, 0.62, 0.28, 0.68, 0.025);
+      box(g, "#d3b773", 0.37, 0.73, 0.64, 0.3, 0.05, 0.025);
+      box(g, wood, 0, height + 0.01, 0, 1.25, 0.07, 1.25);
       const turret = new T.Group();
       turret.position.y = height + 0.18;
       g.add(turret);
       g.userData.ballista = turret;
-      box(turret, dark, 0, 0.14, 0, 0.18, 0.3, 0.18);
-      box(turret, wood, 0, 0.3, 0, 0.16, 0.14, 1.25);
+      const cylinder = (
+        parent: T.Object3D,
+        c: string,
+        x: number,
+        y: number,
+        z: number,
+        r: number,
+        h: number,
+      ) => {
+        const m = new T.Mesh(
+          new T.CylinderGeometry(r, r, h, 12),
+          new T.MeshStandardMaterial({ color: c, roughness: 0.9 }),
+        );
+        m.position.set(x, y, z);
+        m.castShadow = m.receiveShadow = true;
+        parent.add(m);
+        return m;
+      };
+      cylinder(turret, iron, 0, 0.025, 0, 0.32, 0.12);
+      cylinder(turret, wood, 0, 0.14, 0, 0.19, 0.24);
+      box(turret, dark, 0, 0.29, -0.08, 0.32, 0.16, 1.38);
+      for (const x of [-0.13, 0.13])
+        box(turret, wood, x, 0.37, -0.06, 0.065, 0.08, 1.43);
+      box(turret, iron, 0, 0.4, 0.51, 0.35, 0.04, 0.18);
+      // Curved arms, iron tips and a taut V-shaped string read as a giant crossbow.
       for (const side of [-1, 1]) {
-        const bow = box(turret, wood, side * 0.35, 0.31, 0.3, 0.8, 0.1, 0.09);
-        bow.rotation.y = side * 0.3;
+        const points = [
+          new T.Vector3(0, 0.35, 0.38),
+          new T.Vector3(side * 0.35, 0.35, 0.43),
+          new T.Vector3(side * 0.66, 0.35, 0.32),
+          new T.Vector3(side * 0.85, 0.35, 0.14),
+        ];
+        const limb = new T.Mesh(
+          new T.TubeGeometry(
+            new T.CatmullRomCurve3(points),
+            10,
+            0.065,
+            5,
+            false,
+          ),
+          new T.MeshStandardMaterial({ color: wood, roughness: 0.9 }),
+        );
+        limb.castShadow = true;
+        turret.add(limb);
+        box(turret, iron, side * 0.82, 0.35, 0.16, 0.12, 0.14, 0.16);
+        const string = new T.Mesh(
+          new T.TubeGeometry(
+            new T.LineCurve3(
+              new T.Vector3(side * 0.85, 0.36, 0.14),
+              new T.Vector3(0, 0.36, -0.48),
+            ),
+            1,
+            0.014,
+            4,
+            false,
+          ),
+          new T.MeshStandardMaterial({ color: rope }),
+        );
+        turret.add(string);
+        const skein = cylinder(
+          turret,
+          rope,
+          side * 0.2,
+          0.35,
+          0.38,
+          0.095,
+          0.3,
+        );
+        cylinder(turret, iron, side * 0.2, 0.51, 0.38, 0.12, 0.045);
+        box(turret, iron, side * 0.2, 0.17, 0.38, 0.24, 0.05, 0.22);
       }
-      box(turret, "#c9bb88", 0, 0.33, 0.06, 1.25, 0.025, 0.025);
-      box(turret, "#abb2a4", 0, 0.38, 0.45, 0.035, 0.035, 0.8);
-      const bolt = box(turret, "#ddd4ad", 0, 0.38, 0.5, 0.04, 0.04, 0.7);
+      const winch = cylinder(turret, wood, 0, 0.35, -0.62, 0.1, 0.53);
+      winch.rotation.z = Math.PI / 2;
+      for (const x of [-0.25, 0.25])
+        box(turret, iron, x, 0.32, -0.62, 0.065, 0.3, 0.2);
+      box(turret, iron, 0.33, 0.36, -0.62, 0.17, 0.045, 0.045);
+      box(turret, wood, 0.41, 0.43, -0.62, 0.045, 0.18, 0.045);
+      const bolt = box(turret, "#c5ab78", 0, 0.38, 0.35, 0.035, 0.035, 0.85);
+      const head = new T.Mesh(
+        new T.ConeGeometry(0.065, 0.2, 4),
+        new T.MeshStandardMaterial({
+          color: "#bac4bd",
+          metalness: 0.35,
+          roughness: 0.55,
+        }),
+      );
+      head.rotation.x = Math.PI / 2;
+      head.position.z = 0.49;
+      bolt.add(head);
+      for (const side of [-1, 1]) {
+        const feather = box(
+          bolt,
+          "#e2d6b3",
+          0,
+          side * 0.045,
+          -0.32,
+          0.025,
+          0.09,
+          0.16,
+        );
+        feather.rotation.z = side * 0.3;
+      }
       g.userData.bolt = bolt;
+      // Spare bolts sit against the tower, outside the rotating assembly.
+      for (let i = 0; i < 3; i++) {
+        box(g, wood, 0.67, 0.75, -0.3 + i * 0.17, 0.035, 1, 0.035);
+        const tip = box(
+          g,
+          iron,
+          0.67,
+          1.29,
+          -0.3 + i * 0.17,
+          0.075,
+          0.14,
+          0.06,
+        );
+        tip.rotation.z = 0.2;
+      }
     }
   } else if (type === "spikePit") {
     box(g, "#493f2d", 0, 0.015, 0, 0.95, 0.035, 0.95);
