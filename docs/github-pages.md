@@ -3,13 +3,7 @@
 Projekt jest przygotowany dla osobnego repozytorium `gerdax/zielona-dolina-2`. Nie zastępuje starszej gry w `gerdax/zielona-dolina`.
 
 1. Właściciel konta loguje się do GitHub i tworzy publiczne repozytorium `zielona-dolina-2`, bez początkowego README.
-2. Z katalogu projektu wysyła kod i historię:
-
-```sh
-git remote add origin https://github.com/gerdax/zielona-dolina-2.git
-git push -u origin main
-git push origin --tags
-```
+2. Kod gry, testy i konfigurację publikacji wysłano przez integrację GitHub. Pełna historia lokalna oraz lokalne instrukcje i dokumenty robocze nie zostały opublikowane. Nie należy wysyłać całego lokalnego drzewa ani historii bez przeglądu zawartości.
 
 3. W repozytorium wybiera **Settings → Pages → Source → GitHub Actions**.
 4. W **Actions** uruchamia lub ponawia workflow **Publish game to GitHub Pages**.
@@ -19,4 +13,4 @@ Workflow instaluje zależności, uruchamia testy, buduje grę z właściwą ści
 
 Zapisy gry pozostają w przeglądarce gracza. Nowa domena nie odczyta lokalnych zapisów z `127.0.0.1`; można je przenieść przez Eksportuj/Importuj w menu gry.
 
-Stan przygotowania: build i podgląd lokalny sprawdzone. Repozytorium i publiczne wdrożenie wymagają jeszcze utworzenia i zalogowania do GitHub. Sam plik workflow nie oznacza, że strona już działa.
+Gra została opublikowana i uruchomiona w przeglądarce: https://gerdax.github.io/zielona-dolina-2/ . Źródło Pages jest ustawione na GitHub Actions; testy, build i wdrożenie przeszły. Bieżący status publikacji: https://github.com/gerdax/zielona-dolina-2/actions
