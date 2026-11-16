@@ -1,5 +1,7 @@
 # Zielona Dolina II · Pogranicze
 
+**[Graj w przeglądarce](https://gerdax.github.io/zielona-dolina-2/)** · [Osada testowa](https://gerdax.github.io/zielona-dolina-2/?qa=village) · [GitHub](https://github.com/gerdax/zielona-dolina-2)
+
 Autorska przeglądarkowa strategia 3D o osadzie, bohaterze i zjednoczeniu doliny. Nowy, niezależny projekt. Wersja **0.23.8** obejmuje pierwszy grywalny region; pełna kampania jest rozwijana etapami.
 
 ## Uruchomienie
@@ -42,13 +44,13 @@ Menu zawiera zapis, wczytanie, poprzednią kopię, eksport/import JSON oraz usta
 - `src/save.ts`: walidacja, IndexedDB i kopia poprzedniego zapisu.
 - `tests/`: pełna pętla regionu, regresje mechanik i trwałość zapisu.
 
-Szczegóły: [interakcje](docs/interactions.md), [katalog oryginału i dalsze etapy](docs/roadmap.md), [weryfikacja](docs/verification.md), [historia zmian](CHANGELOG.md).
+Szczegóły wydań: [historia zmian](CHANGELOG.md).
 
 ## Wersjonowanie
 
 Stosujemy SemVer: `0.MINOR.PATCH`. Nowy etap gry zwiększa MINOR; poprawki zwiększają PATCH. Zmiany formatu zapisu wymagają osobnej zmiany jego `version` i migracji, niezależnie od wersji aplikacji.
 
-Każde wydanie: aktualizacja `CHANGELOG.md`, `npm test`, `npm run build`, kontrola w przeglądarce, następnie commit i tag `vX.Y.Z`. Repozytorium jest lokalne; publikacja na GitHubie lub hostingu stanowi osobne działanie.
+Każde wydanie: aktualizacja `CHANGELOG.md`, `npm test`, `npm run build`, kontrola w przeglądarce, następnie commit i tag `vX.Y.Z`. Pełna historia pozostaje lokalnie. Publiczne repozytorium zawiera wybrane pliki gry i konfigurację publikacji.
 
 ## Licencje zasobów
 
@@ -68,4 +70,4 @@ Osada testowa jest automatycznie uzupełniana o sześć nowych budowli, obsadę 
 
 ## Publikacja w przeglądarce
 
-Konfiguracja GitHub Pages znajduje się w `.github/workflows/pages.yml`. [Instrukcja publikacji](docs/github-pages.md) opisuje osobne repozytorium i uruchomienie strony. Wdrożenie publiczne nie zostało jeszcze wykonane.
+Konfiguracja GitHub Pages znajduje się w `.github/workflows/pages.yml`. [Instrukcja publikacji](docs/github-pages.md) opisuje osobne repozytorium i uruchomienie strony. Adres publikacji: https://gerdax.github.io/zielona-dolina-2/ (status wdrożenia jest widoczny w GitHub Actions).
