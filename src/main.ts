@@ -1,3 +1,5 @@
+import { gameMode } from "./game-mode";
+import { hudViewport, resourceAmount } from "./hud-viewport";
 import {
   addonsFor,
   rewardTasks,
@@ -124,9 +126,7 @@ const resourceNames: Record<string, string> = {
   gold: "Monety",
   iron: "Żelazo",
 };
-const qa = import.meta.env.DEV
-  ? new URLSearchParams(location.search).get("qa")
-  : null;
+const qa = gameMode(location.search, import.meta.env.DEV);
 const sessionKey = "valley:dev-session:" + (qa || "campaign");
 const recovered = import.meta.env.DEV ? recoverSession(sessionKey) : null;
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -141,6 +141,36 @@ app.innerHTML = `<main id="scene" aria-label="Mapa Zielonej Doliny"></main>
  <section id="buildPanel" class="floatingPanel hidden"></section><section id="book" class="floatingPanel hidden"></section>
  <div id="modal" class="modal hidden"></div>
  <div id="intro" class="intro"><div class="introCard"><span class="eyebrow">NOWA OPOWIEŚĆ · TEN SAM DUCH</span><div class="introCrest">♜</div><h1>Zielona<br><em>Dolina</em><sup>II</sup></h1><p>Z małej osady rodzi się królestwo.</p><div class="introActions"><button id="start" class="primary">Wejdź do doliny <span>→</span></button><button id="continue" class="hidden">Kontynuuj wyprawę</button></div><small>Buduj. Odkrywaj. Chroń swoich ludzi.</small></div><span class="introFooter">POGRANICZE <i>✦</i> ROZDZIAŁ PIERWSZY</span></div>`;
+// Keep controls inside the visible viewport even after native page pinch zoom.
+const hud = document.createElement("div");
+hud.id = "gameHud";
+for (const child of Array.from(app.children))
+  if (
+    ![
+      "scene",
+      "worldLabels",
+      "tooltip",
+      "selectionBox",
+      "moveMarker",
+      "diagnostics",
+    ].includes(child.id)
+  )
+    hud.append(child);
+app.append(hud);
+function fitHud() {
+  const layout = hudViewport(
+    window.visualViewport || undefined,
+    innerWidth,
+    innerHeight,
+  );
+  hud.style.width = layout.width + "px";
+  hud.style.height = layout.height + "px";
+  hud.style.transform = `translate(${layout.x}px,${layout.y}px) scale(${layout.scale})`;
+}
+window.visualViewport?.addEventListener("resize", fitHud);
+window.visualViewport?.addEventListener("scroll", fitHud);
+window.addEventListener("resize", fitHud);
+fitHud();
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 let world =
@@ -1799,7 +1829,7 @@ function renderUI() {
     Object.entries(world.resources)
       .map(
         ([k, v]) =>
-          `<div class="resource" title="${resourceNames[k]}"><span>${icons[k]}</span><b>${Math.floor(v)}</b><small>${resourceNames[k]}</small></div>`,
+          `<div class="resource" title="${resourceNames[k]}: ${Math.floor(v).toLocaleString("pl")}"><span>${icons[k]}</span><b>${resourceAmount(v)}</b><small>${resourceNames[k]}</small></div>`,
       )
       .join("") +
     `<div class="resource population" title="Mieszkańcy i wojsko"><span>♙</span><b>${ownUnits().length}</b><small>Ludzie</small></div>`;

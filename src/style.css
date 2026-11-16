@@ -1648,3 +1648,113 @@ h2 {
   color: #e6b6a1;
   border-color: #ba816666;
 }
+
+/* HUD follows the visual viewport while map labels remain anchored to the world. */
+#gameHud {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  z-index: 10;
+}
+#gameHud > * {
+  pointer-events: auto;
+}
+#gameHud > .bottom {
+  pointer-events: none;
+}
+@media (max-width: 780px) {
+  .bottom .mapPanel {
+    display: block;
+    position: fixed;
+    left: 12px;
+    top: 80px;
+    bottom: auto;
+    width: 136px;
+  }
+  .mapPanel #minimap {
+    width: 100%;
+    height: 88px;
+  }
+  .mapPanel .mapTop {
+    height: 23px;
+    padding: 4px 6px;
+    font-size: 8px;
+  }
+  .mapPanel .mapFoot {
+    height: 27px;
+  }
+  .mapPanel .mapFoot button {
+    font-size: 8px;
+    padding: 4px;
+  }
+  .objective {
+    width: min(230px, calc(100vw - 176px));
+  }
+}
+@media (max-width: 520px) {
+  .topbar {
+    height: 83px;
+    flex-wrap: wrap;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  .brand {
+    height: 27px;
+    margin: 0;
+    padding-right: 8px;
+  }
+  .crest {
+    height: 27px;
+    width: 24px;
+    font-size: 20px;
+  }
+  .clock {
+    margin-left: auto;
+  }
+  #resources {
+    order: 3;
+    flex: 0 0 100%;
+    justify-content: space-between;
+    gap: 3px;
+  }
+  .resource {
+    min-width: 0;
+    grid-template-columns: 14px auto;
+    column-gap: 3px;
+  }
+  .resource > b {
+    font-size: 15px;
+  }
+  .resource > span {
+    font-size: 14px;
+  }
+  .bottom .mapPanel {
+    top: 104px;
+    width: 112px;
+  }
+  .mapPanel #minimap {
+    height: 72px;
+  }
+  .objective {
+    top: 104px;
+    width: calc(100vw - 148px);
+    padding: 9px;
+  }
+  .objective .objectiveIcon {
+    display: none;
+  }
+  .objective b {
+    font-size: 17px;
+  }
+  #buildMode {
+    top: 100px;
+  }
+}
+
+#gameHud > #mapHint,
+#gameHud > #location,
+#gameHud > #toast {
+  pointer-events: none;
+}

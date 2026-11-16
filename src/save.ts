@@ -1,3 +1,4 @@
+import { saveSlot } from "./game-mode";
 import { buildingDefs } from "./content";
 import {
   addonsFor,
@@ -8,12 +9,7 @@ import {
 } from "./addons";
 import { settleInstantPurchases, type World } from "./simulation";
 // The workshop never reads or overwrites campaign records, including purchase saves.
-const DB =
-  import.meta.env.DEV &&
-  typeof location !== "undefined" &&
-  new URLSearchParams(location.search).get("qa") === "village"
-    ? "zielona-dolina-ii-test-village"
-    : "zielona-dolina-ii";
+const DB = saveSlot(typeof location !== "undefined" ? location.search : "");
 export function validateSave(value: unknown): World {
   if (!value || typeof value !== "object") throw Error("Nieprawidłowy zapis");
   const w = value as World;

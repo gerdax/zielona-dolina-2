@@ -1,5 +1,12 @@
 # Historia zmian
 
+## [0.23.11] — 2026-11-16
+
+- Panele HUD pozostają w widocznym obszarze także przy natywnym przybliżeniu i przesunięciu całej strony. Naprawiono znikanie zasobów i przycisków przy powiększeniu 3×.
+- Mała minimapa jest dostępna również w węższym oknie. Duże liczby zasobów są skrócone, a pełne wartości pozostają w etykietach.
+- Publiczny parametr `?qa=village` uruchamia teraz osadę testową również w produkcyjnym buildzie, zawsze z oddzielną bazą zapisów. Kampania i dotychczasowy postęp pozostają rozdzielone.
+- 213 testów i kompilacja przechodzą. Panele i otwieranie budowy sprawdzone przy rzeczywistym przybliżeniu 3×; pełny build osady testowej obejrzany.
+
 ## [0.23.10] — 2026-11-16
 
 - Balista ma pełny cykl animacji: zwolnienie cięciwy przy strzale, odrzut korpusu, powrót, obrót korby, naciąganie cięciwy oraz załadowanie kolejnego bełtu. Podstawa wieży pozostaje nieruchoma, a wystrzelony bełt zachowuje własny tor.

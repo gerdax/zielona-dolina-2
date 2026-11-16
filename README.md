@@ -2,7 +2,7 @@
 
 **[Graj w przeglądarce](https://gerdax.github.io/zielona-dolina-2/)** · [Osada testowa](https://gerdax.github.io/zielona-dolina-2/?qa=village) · [GitHub](https://github.com/gerdax/zielona-dolina-2)
 
-Autorska przeglądarkowa strategia 3D o osadzie, bohaterze i zjednoczeniu doliny. Nowy, niezależny projekt. Wersja **0.23.10** obejmuje pierwszy grywalny region; pełna kampania jest rozwijana etapami.
+Autorska przeglądarkowa strategia 3D o osadzie, bohaterze i zjednoczeniu doliny. Nowy, niezależny projekt. Wersja **0.23.11** obejmuje pierwszy grywalny region; pełna kampania jest rozwijana etapami.
 
 ## Uruchomienie
 
